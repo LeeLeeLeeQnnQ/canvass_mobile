@@ -11,7 +11,8 @@ export default {
   name: 'app',
   data () {
     return {
-      excludeList:['viewEdit','infoEdit','addView']
+      // excludeList:['viewEdit','infoEdit','addView']
+      excludeList:['infoEdit','addView']
     }
   },
   methods: {

@@ -21,6 +21,31 @@ export const getLeasingList = () => {
 }
 
 
+// 获取店铺运营
+export const getManageList = () => {
+  const data = { group_id: '7' }
+  return axios.request({
+    url: '/api/Index/getEmployeeList',
+    data,
+    method: 'post'
+  })
+}
+
+
+/*
+  获取厨房下的档口列表
+*/
+/*
+  kitchen_id
+*/
+export const getStoreNoList = ( obj ) => {
+  return axios.request({
+    url: '/api/Index/getStoreNo',
+    params: obj,
+    method: 'get'
+  })
+}
+
 // 
 export const uploadImg = (data) => {
   return axios.request({

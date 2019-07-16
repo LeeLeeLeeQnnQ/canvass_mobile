@@ -11,6 +11,7 @@ import infoEdit from '@/pages/infoEdit/infoEdit.vue'
 import marketControl from '@/pages/marketControl/marketControl.vue'
 import addView from '@/pages/addView/addView.vue'
 import infoSreach from '@/pages/infoSreach/infoSreach.vue'
+import preBuild from '@/pages/preBuild/preBuild.vue'
 
 Vue.use(Router)
 
@@ -50,6 +51,11 @@ const router = new Router({
       path: '/infoSreach',
       name: 'infoSreach',
       component: infoSreach
+    },
+    {
+      path: '/preBuild',
+      name: 'preBuild',
+      component: preBuild
     }
   ],
   mode: 'history'

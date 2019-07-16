@@ -31,6 +31,11 @@
             <span>客户称呼：</span>
             <span>{{customerInfo.customer_name}}</span>
           </div>
+          <div class="view-edit_customer-info-item" 
+          v-if="!!customerInfo.id">
+            <span>客户ID：</span>
+            <span>{{customerInfo.id}}</span>
+          </div>
           <div class="view-edit_customer-info-item">
             <span>联系方式：</span>
             <span>{{customerInfo.contact}}</span>
@@ -52,6 +57,13 @@
             :inline="true">
             录入
           </cube-button>
+          <!-- <cube-button
+            @click="goPrebuild"
+            class="view-edit_customer-info-submit"
+            :primary="true"
+            :inline="true">
+            预建档
+          </cube-button> -->
         </div>
       </cube-scroll>
     </div>
@@ -118,6 +130,16 @@ export default {
       this.$router.push({
         name: 'addView',
         query: this.customerInfo
+      })
+    },
+    // 
+    goPrebuild(){
+      let query = {
+        customer_id:this.customerInfo.id
+      }
+      this.$router.push({
+        name: 'preBuild',
+        query: query
       })
     },
   },
