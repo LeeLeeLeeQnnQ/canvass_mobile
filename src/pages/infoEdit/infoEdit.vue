@@ -96,7 +96,7 @@
             </div>
           </div>
           <div class="info-edit_card-info-item">
-            <p class="info-edit_card-info-item-title">授权合照</p>
+            <p class="info-edit_card-info-item-title">其他凭证</p>
           </div>
           <div class="info-edit_card-info-warp">
             <div class="info-edit_card-info-warp-item" v-for="item in start_other">
