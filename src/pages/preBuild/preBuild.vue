@@ -33,7 +33,7 @@
             <cube-input class="pre-build_customer-info-item-span pre-build_customer-info-item-input" v-model="preBuildInfo.shopkeeper_phone" >
             </cube-input>
           </div>
-          <div class="pre-build_customer-info-item" >
+<!--           <div class="pre-build_customer-info-item" >
             <span class="pre-build_customer-info-item-span">负责店长：</span>
             <cube-select
               class="pre-build_customer-info-item-span pre-build_customer-info-item-input"
@@ -41,7 +41,7 @@
               placeholder="请选择"
               :options="manageList">
             </cube-select>
-          </div>
+          </div> -->
           <div class="pre-build_customer-info-item" >
             <span class="pre-build_customer-info-item-span">招商经理：</span>
             <cube-select
@@ -327,10 +327,10 @@ export default {
         this.showToast('请输入正确店主手机号！')
         return false
       }
-      if (!obj.manage_id || !obj.manage_name) {
-        this.showToast('请选择店长！')
-        return false
-      }
+      // if (!obj.manage_id || !obj.manage_name) {
+      //   this.showToast('请选择店长！')
+      //   return false
+      // }
       if (!obj.manage_lease_id || !obj.manage_lease) {
         this.showToast('请选择招商经理！')
         return false

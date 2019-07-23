@@ -225,6 +225,11 @@ export default {
     submitInfo(){
       let info = Object.assign({},this.baseInfo,this.editInfo);
       if(this.testInfo(info)){
+        this.leasingList.forEach((item)=>{
+          if(item.value == info.employee_id){
+            info.employee_name = item.text
+          }
+        })
         if(info.isNew){
           this.addNewClue(info);
         }else{
