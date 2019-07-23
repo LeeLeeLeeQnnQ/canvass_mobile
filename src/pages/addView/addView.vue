@@ -230,6 +230,9 @@ export default {
             info.employee_name = item.text
           }
         })
+        let clue_date = info.clue_date.split('-');
+        clue_date[1] = clue_date[1] < 10 ? '0' + clue_date[1] : clue_date[1];
+        info.clue_date = clue_date;
         if(info.isNew){
           this.addNewClue(info);
         }else{
