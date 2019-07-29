@@ -33,20 +33,11 @@
             <cube-input class="pre-build_customer-info-item-span pre-build_customer-info-item-input" v-model="preBuildInfo.shopkeeper_phone" >
             </cube-input>
           </div>
-<!--           <div class="pre-build_customer-info-item" >
-            <span class="pre-build_customer-info-item-span">负责店长：</span>
-            <cube-select
-              class="pre-build_customer-info-item-span pre-build_customer-info-item-input"
-              v-model="preBuildInfo.manage_id"
-              placeholder="请选择"
-              :options="manageList">
-            </cube-select>
-          </div> -->
           <div class="pre-build_customer-info-item" >
             <span class="pre-build_customer-info-item-span">招商经理：</span>
             <cube-select
               class="pre-build_customer-info-item-span pre-build_customer-info-item-input"
-              v-model="preBuildInfo.employee_id"
+              v-model="preBuildInfo.manage_lease_id"
               placeholder="请选择"
               :options="leasingList">
             </cube-select>
@@ -155,7 +146,7 @@
 import CHeader from '@/components/CHeader'
 import { getScorllBoxHeight , imgPreview  } from "@/js/util.js";
 import { getKitchenList , getLeasingList , getManageList , getStoreNoList , uploadImg } from '@/api/data'
-import { setKitchen } from '@/api/info'
+import { setPreBuild } from '@/api/info'
 export default {
   name: 'preBuild',
   components: {
@@ -163,7 +154,9 @@ export default {
   },
   data () {
     return {
-      preBuildInfo:{},
+      preBuildInfo:{
+        sign_date:'',
+      },
       pay:[],
       contract:[],
       // 下拉数据
@@ -194,6 +187,7 @@ export default {
           let obj = {};
           obj.value = item.id+'';
           obj.text = item.kitchen_name;
+          obj.manage_name = item.manage_name;
           arr.push(obj)
         });
         this.kitchenList = arr;
@@ -204,8 +198,14 @@ export default {
       if(!this.preBuildInfo.kitchen_id){
         return
       }
+      let id = this.preBuildInfo.kitchen_id;
+      this.kitchenList.forEach( (item)=>{
+        if (item.value == id) {
+          this.preBuildInfo.manage_name = item.manage_name
+        }
+      })
       this.shopList = [];
-      this.getStoreNoList(this.preBuildInfo.kitchen_id);
+      this.getStoreNoList(id);
     },
     // 招商列表
     getLeasingList(){
@@ -247,18 +247,18 @@ export default {
     },
     // 签约时间
     selectSignDate() {
-      if (!this.datePicker) {
-        this.datePicker = this.$createDatePicker({
-          title: '带看时间',
-          value: new Date(),
-          onSelect: this.selectSignHandle,
-        })
-      }
-      this.datePicker.show()
+      this.dateSignPicker = null;
+      this.dateSignPicker = this.$createDatePicker({
+        title: '签约时间',
+        value: new Date(),
+        onSelect: this.selectSignHandle,
+      })
+      this.dateSignPicker.show()
     },
     // 签约时间选择
     selectSignHandle(date, selectedVal, selectedText) {
-      this.preBuildInfo.sign_date = selectedText.join('-');
+      selectedVal[1] = selectedVal[1] < 10 ? '0' + selectedVal[1] : selectedVal[1];
+      this.preBuildInfo.sign_date = selectedVal.join('-');
     },
     // 获取厨房下档口
     getStoreNoList(kitchen_id){
@@ -327,10 +327,6 @@ export default {
         this.showToast('请输入正确店主手机号！')
         return false
       }
-      // if (!obj.manage_id || !obj.manage_name) {
-      //   this.showToast('请选择店长！')
-      //   return false
-      // }
       if (!obj.manage_lease_id || !obj.manage_lease) {
         this.showToast('请选择招商经理！')
         return false
@@ -393,25 +389,33 @@ export default {
       let obj = Object.assign({},this.preBuildInfo);
       obj.pay = this.pay;
       obj.contract = this.contract;
+      this.leasingList.forEach((item)=>{
+        if(item.value == obj.manage_lease_id){
+          obj.manage_lease = item.text
+        }
+      })
+      this.kitchenList.forEach((item)=>{
+        if(item.value == obj.kitchen_id){
+          obj.kitchen_name = item.text
+        }
+      })
       if (this.submitValidateField(obj)) {
         this.setOrderInfo(obj)
       }
     },
     // 发送数据
     setOrderInfo (info) {
-      setKitchen(info).then(res => {
+      info.pay = info.pay.join(",")
+      info.contract = info.contract.join(',')
+      setPreBuild(info).then(res => {
         const dbody = res.data
         if (dbody.code == 0) {
-          this.$Notice.warning({
-            title: '预创建完成！'
-          })
+          this.showToast('预创建完成！')
           setTimeout(()=>{
             this.$router.go(-1)
           }, 1500)
         } else {
-          this.$Notice.warning({
-            title: dbody.msg
-          })
+          this.showToast(dbody.msg)
         }
       })
     },

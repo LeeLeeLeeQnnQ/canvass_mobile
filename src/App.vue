@@ -12,7 +12,7 @@ export default {
   data () {
     return {
       // excludeList:['viewEdit','infoEdit','addView']
-      excludeList:['infoEdit','addView']
+      excludeList:['infoEdit','addView','preBuild']
     }
   },
   methods: {

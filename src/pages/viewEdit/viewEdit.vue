@@ -57,13 +57,14 @@
             :inline="true">
             录入
           </cube-button>
-          <!-- <cube-button
+          <cube-button
+            v-if="!customerInfo.isNew"
             @click="goPrebuild"
             class="view-edit_customer-info-submit"
             :primary="true"
             :inline="true">
             预建档
-          </cube-button> -->
+          </cube-button>
         </div>
       </cube-scroll>
     </div>

@@ -167,7 +167,8 @@ export default {
       this.eleDatePicker.show()
     },
     selectEleDateHandle(date, selectedVal, selectedText) {
-      this.ele_date = selectedText.join('-');
+      selectedVal[1] = selectedVal[1] < 10 ? '0' + selectedVal[1] : selectedVal[1];
+      this.ele_date = selectedVal.join('-');
     },
     // 美团上线日期
     selectMeituanDate() {
@@ -181,7 +182,8 @@ export default {
       this.meituanDatePicker.show()
     },
     selectEleMeituanDateHandle(date, selectedVal, selectedText) {
-      this.meituan_date = selectedText.join('-');
+      selectedVal[1] = selectedVal[1] < 10 ? '0' + selectedVal[1] : selectedVal[1];
+      this.meituan_date = selectedVal.join('-');
     },
     submitEditInfo(){
       let obj = {};
