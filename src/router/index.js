@@ -12,6 +12,7 @@ import marketControl from '@/pages/marketControl/marketControl.vue'
 import addView from '@/pages/addView/addView.vue'
 import infoSreach from '@/pages/infoSreach/infoSreach.vue'
 import preBuild from '@/pages/preBuild/preBuild.vue'
+import viewList from '@/pages/viewList/viewList.vue'
 
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ const router = new Router({
       path: '/preBuild',
       name: 'preBuild',
       component: preBuild
+    },
+    {
+      path: '/viewList',
+      name: 'viewList',
+      component: viewList
     }
   ],
   mode: 'history'

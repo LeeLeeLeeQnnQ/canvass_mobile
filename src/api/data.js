@@ -31,6 +31,15 @@ export const getManageList = () => {
   })
 }
 
+// 获取我的带看
+export const getMyViewList = (data) => {
+  return axios.request({
+    url: '/api/Clue/index',
+    data,
+    method: 'post'
+  })
+}
+// api/Clue/index
 
 /*
   获取厨房下的档口列表

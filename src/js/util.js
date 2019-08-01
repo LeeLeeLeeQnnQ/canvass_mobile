@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 import config from '@/config'
 import Exif from 'exif-js'
 export const TOKEN_KEY = 'token'
+export const UID_KEY = 'uid'
 const { cookieExpires } = config
 
 // 获取scroll高度
@@ -167,6 +168,37 @@ function compress(img,Orientation) {
   let ndata = canvas.toDataURL('image/jpeg', 0.5);
   tCanvas.width = tCanvas.height = canvas.width = canvas.height = 0;
   return ndata;
+}
+// 获取当前时间距离
+function timeForMat(count) {
+  // 拼接时间
+  const time1 = new Date()
+  const time2 = new Date()
+  if (count === 1) {
+    time1.setTime(time1.getTime() - (24 * 60 * 60 * 1000))
+  } else {
+    if (count >= 0) {
+      time1.setTime(time1.getTime())
+    } else {
+      if (count === -2) {
+        time1.setTime(time1.getTime() + (24 * 60 * 60 * 1000) * 2)
+      } else {
+        time1.setTime(time1.getTime() + (24 * 60 * 60 * 1000))
+      }
+    }
+  }
+
+  const Y1 = time1.getFullYear()
+  const M1 = ((time1.getMonth() + 1) > 9 ? (time1.getMonth() + 1) : '0' + (time1.getMonth() + 1))
+  const D1 = (time1.getDate() > 9 ? time1.getDate() : '0' + time1.getDate())
+  const timer1 = Y1 + '-' + M1 + '-' + D1  // 当前时间
+
+  time2.setTime(time2.getTime() - (24 * 60 * 60 * 1000 * count))
+  const Y2 = time2.getFullYear()
+  const M2 = ((time2.getMonth() + 1) > 9 ? (time2.getMonth() + 1) : '0' + (time2.getMonth() + 1))
+  const D2 = (time2.getDate() > 9 ? time2.getDate() : '0' + time2.getDate())
+  const timer2 = Y2 + '-' + M2 + '-' + D2 // 之前的7天或者30天
+  return [timer2, timer1]
 }
 
 function showToast(content) {
@@ -379,6 +411,20 @@ const setToken = (token) => {
   Cookies.set(TOKEN_KEY, token, {expires: cookieExpires || 1})
 }
 
+
+const getUid = () => {
+  const id = window.sessionStorage.getItem('gdjumaoid')
+  if (id) {
+    Cookies.set(UID_KEY, id, {expires: cookieExpires || 1})
+    return id
+  } else { return false }
+}
+
+const setUid = (id) => {
+  window.sessionStorage.setItem('gdjumaoid', id)
+  Cookies.set(UID_KEY, id, {expires: cookieExpires || 1})
+}
+
 export {
   findIndex,
   deepAssign,
@@ -396,5 +442,8 @@ export {
   showLoading,
   getWindowHeight,
   getScorllBoxHeight,
-  imgPreview
+  imgPreview,
+  timeForMat,
+  getUid,
+  setUid
 }

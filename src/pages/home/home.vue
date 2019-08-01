@@ -23,6 +23,13 @@
         :inline="true">
         销控查看
       </cube-button>
+      <cube-button
+        @click="goViewList"
+        class="home-button"
+        :primary="true"
+        :inline="true">
+        我的带看信息
+      </cube-button>
     </div>
   </div>
 </template>
@@ -54,7 +61,12 @@ export default {
       this.$router.push({
         name: 'marketControl'
       })
-    }
+    },
+    goViewList(){
+      this.$router.push({
+        name: 'viewList'
+      })
+    },
   },
   created: function () {
 

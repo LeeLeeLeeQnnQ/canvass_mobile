@@ -3,11 +3,12 @@ import {
   logout,
   getUserInfo
 } from '@/api/user'
-import { setToken, getToken } from '@/js/util'
+import { setToken, getToken , setUid } from '@/js/util'
 
 export default {
   state: {
     userName: '',
+    uid:'',
     token: '',
     hasGetInfo: false,
     storeInfo:{}
@@ -15,6 +16,10 @@ export default {
   mutations: {
     setUsername (state, username) {
       state.username = username
+    },
+    setUid (state, id) {
+      state.uid = id
+      setUid(id)
     },
     setToken (state, token) {
       state.token = token
@@ -42,6 +47,8 @@ export default {
             const data = dbody.data
             // 存储用户token
             commit('setToken', data.token)
+            // 存储用户uid
+            commit('setUid', data.info.id)
             // 存储信息成功开关
             commit('sethasGetInfo', true)
             // 存储用户名字
@@ -65,6 +72,8 @@ export default {
               if (dbody.code != 0) {
                 // 存储用户token
                 commit('setToken', '')
+                // 存储用户uid
+                commit('setUid', '')
                 // 存储信息成功开关
                 commit('sethasGetInfo', false)
                 // 存储用户名字
@@ -92,6 +101,8 @@ export default {
         logout(state.token).then(() => {
           // 存储用户token
           commit('setToken', '')
+          // 存储用户uid
+          commit('setUid', '')
           // 存储信息成功开关
           commit('sethasGetInfo', '')
           // 存储用户名字
