@@ -211,6 +211,7 @@ export default {
     },
     selectHandle(date, selectedVal, selectedText) {
       selectedVal[1] = selectedVal[1] < 10 ? '0' + selectedVal[1] : selectedVal[1];
+      selectedVal[2] = selectedVal[2] < 10 ? '0' + selectedVal[2] : selectedVal[2];
       this.editInfo.clue_date = selectedVal.join('-');
     },
     canEditEmployee() {

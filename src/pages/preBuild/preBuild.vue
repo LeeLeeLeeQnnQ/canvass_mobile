@@ -258,6 +258,7 @@ export default {
     // 签约时间选择
     selectSignHandle(date, selectedVal, selectedText) {
       selectedVal[1] = selectedVal[1] < 10 ? '0' + selectedVal[1] : selectedVal[1];
+      selectedVal[2] = selectedVal[2] < 10 ? '0' + selectedVal[2] : selectedVal[2];
       this.preBuildInfo.sign_date = selectedVal.join('-');
     },
     // 获取厨房下档口

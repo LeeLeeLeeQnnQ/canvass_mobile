@@ -168,6 +168,7 @@ export default {
     },
     selectEleDateHandle(date, selectedVal, selectedText) {
       selectedVal[1] = selectedVal[1] < 10 ? '0' + selectedVal[1] : selectedVal[1];
+      selectedVal[2] = selectedVal[2] < 10 ? '0' + selectedVal[2] : selectedVal[2];
       this.ele_date = selectedVal.join('-');
     },
     // 美团上线日期
@@ -183,6 +184,7 @@ export default {
     },
     selectEleMeituanDateHandle(date, selectedVal, selectedText) {
       selectedVal[1] = selectedVal[1] < 10 ? '0' + selectedVal[1] : selectedVal[1];
+      selectedVal[2] = selectedVal[2] < 10 ? '0' + selectedVal[2] : selectedVal[2];
       this.meituan_date = selectedVal.join('-');
     },
     submitEditInfo(){
