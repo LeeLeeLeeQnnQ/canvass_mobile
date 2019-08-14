@@ -7,7 +7,7 @@
         @pulling-up="onPullingUp"
         @pulling-down="onPullingDown"
         ref="scroll">
-        <ul class="view-list_card">
+        <ul class="view-list_card" v-if="viewList.length > 0">
           <li class="view-list_card-box" v-for="item in viewList">
             <div class="view-list_card-box-item">
               <h3 class="view-list_card-box-item-h3">{{item.kitchen_name}}</h3>
@@ -26,6 +26,7 @@
             </div>
           </li>
         </ul>
+        <h3 v-else class="view-list_empty">暂无数据</h3>
       </cube-scroll>
     </div>
   </div>
@@ -179,6 +180,11 @@
           }
         }
       }
+    }
+    &_empty{
+      padding: 0.5rem 0;
+      font-size: 0.5rem;
+      color: #666;
     }
   }
 </style>

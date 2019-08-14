@@ -3,7 +3,7 @@ import {
   logout,
   getUserInfo
 } from '@/api/user'
-import { setToken, getToken , setUid } from '@/js/util'
+import { setToken, getToken , setUid , setBrand, setCity } from '@/js/util'
 
 export default {
   state: {
@@ -28,6 +28,12 @@ export default {
     sethasGetInfo (state, isGetInfo) {
       state.hasGetInfo = isGetInfo
     },
+    setCity(state, city){
+      setCity(city)
+    },
+    setBrand(state, brand){
+      setBrand(brand)
+    },
   },
   getters: {
     
@@ -47,6 +53,8 @@ export default {
             const data = dbody.data
             // 存储用户token
             commit('setToken', data.token)
+            commit('setCity', data.info.city_id[0])
+            commit('setBrand', data.info.brand_id[0])
             // 存储用户uid
             commit('setUid', data.info.id)
             // 存储信息成功开关
@@ -72,6 +80,8 @@ export default {
               if (dbody.code != 0) {
                 // 存储用户token
                 commit('setToken', '')
+                commit('setCity', '')
+                commit('setBrand', '')
                 // 存储用户uid
                 commit('setUid', '')
                 // 存储信息成功开关
@@ -85,6 +95,8 @@ export default {
               commit('sethasGetInfo', true)
               // 存储用户名字
               commit('setUsername', data.fullname)
+              commit('setCity', data.city_id[0])
+              commit('setBrand', data.brand_id[0])
               resolve(dbody)
             }).catch(err => {
               reject(err)
@@ -101,6 +113,8 @@ export default {
         logout(state.token).then(() => {
           // 存储用户token
           commit('setToken', '')
+          commit('setCity', '')
+          commit('setBrand', '')
           // 存储用户uid
           commit('setUid', '')
           // 存储信息成功开关

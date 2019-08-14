@@ -3,6 +3,8 @@ import config from '@/config'
 import Exif from 'exif-js'
 export const TOKEN_KEY = 'token'
 export const UID_KEY = 'uid'
+export const CITY_KEY = 'city'
+export const BRAND_KEY = 'brand'
 const { cookieExpires } = config
 
 // 获取scroll高度
@@ -425,6 +427,17 @@ const setUid = (id) => {
   Cookies.set(UID_KEY, id, {expires: cookieExpires || 1})
 }
 
+const setCity = (city) => {
+  window.sessionStorage.setItem('gdjumaoidcity', city)
+  Cookies.set(CITY_KEY, city, {expires: cookieExpires || 1})
+}
+
+const setBrand = (brand) => {
+  window.sessionStorage.setItem('gdjumaoidbrand', brand)
+  Cookies.set(BRAND_KEY, brand, {expires: cookieExpires || 1})
+}
+
+
 export {
   findIndex,
   deepAssign,
@@ -445,5 +458,7 @@ export {
   imgPreview,
   timeForMat,
   getUid,
-  setUid
+  setUid,
+  setCity,
+  setBrand
 }
