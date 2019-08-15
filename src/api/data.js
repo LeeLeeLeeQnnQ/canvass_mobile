@@ -11,10 +11,19 @@ export const getKitchenList = () => {
 
 
 // 获取招商经理
-export const getLeasingList = () => {
-  const data = { group_id: '8' }
+export const getLeasingList = (data) => {
   return axios.request({
-    url: '/api/Index/getEmployeeList',
+    url: '/api/Index/getSalesList',
+    data,
+    method: 'post'
+  })
+}
+
+
+// 获取信息
+export const showEmployee = (data) => {
+  return axios.request({
+    url: '/api/Employee/show',
     data,
     method: 'post'
   })

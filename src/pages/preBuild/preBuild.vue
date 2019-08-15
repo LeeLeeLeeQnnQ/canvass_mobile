@@ -34,6 +34,25 @@
             </cube-input>
           </div>
           <div class="pre-build_customer-info-item" >
+            <cube-input
+              class="pre-build_customer-info-item-span pre-build_customer-info-item-input"
+              placeholder="搜索招商经理"
+              v-model="customer_query" >
+            </cube-input>
+            <cube-button
+              @click="queryEmployee"
+              class="pre-build_customer-info-btnbox-button"
+              :primary="true"
+              :inline="true">
+              搜索
+            </cube-button>
+          </div>
+          <div class="pre-build_customer-info-item" >
+            <span class="pre-build_customer-info-item-span">招商经理：</span>
+            <cube-input class="pre-build_customer-info-item-span pre-build_customer-info-item-input" :readonly="true" v-model="preBuildInfo.manage_lease" >
+            </cube-input>
+          </div>
+<!--           <div class="pre-build_customer-info-item" >
             <span class="pre-build_customer-info-item-span">招商经理：</span>
             <cube-select
               class="pre-build_customer-info-item-span pre-build_customer-info-item-input"
@@ -41,7 +60,8 @@
               placeholder="请选择"
               :options="leasingList">
             </cube-select>
-          </div>
+          </div> -->
+
           <div class="pre-build_customer-info-item" >
             <span class="pre-build_customer-info-item-span">所属厨房：</span>
             <cube-select
@@ -145,7 +165,7 @@
 <script>
 import CHeader from '@/components/CHeader'
 import { getScorllBoxHeight , imgPreview  } from "@/js/util.js";
-import { getKitchenList , getLeasingList , getManageList , getStoreNoList , uploadImg } from '@/api/data'
+import { getKitchenList , getLeasingList , getManageList , getStoreNoList , uploadImg , queryEmployee } from '@/api/data'
 import { setPreBuild } from '@/api/info'
 export default {
   name: 'preBuild',
@@ -154,8 +174,10 @@ export default {
   },
   data () {
     return {
+      customer_query:'',
       preBuildInfo:{
         sign_date:'',
+        manage_lease:'',
       },
       pay:[],
       contract:[],
@@ -167,10 +189,54 @@ export default {
     }
   },
   methods: {
+    showLeasePicker() {
+      if (!this.leasePicker) {
+        this.leasePicker = this.$createPicker({
+          title: '招商经理',
+          data: [this.leasingList],
+          onSelect: this.selectLeaseHandle,
+          onCancel: this.cancelLeaseHandle
+        })
+      }
+      this.leasePicker.show()
+    },
+    selectLeaseHandle(selectedVal, selectedIndex, selectedText){
+      this.preBuildInfo.manage_lease_id = selectedVal[0]
+      this.preBuildInfo.manage_lease = selectedText[0]
+    },
+    cancelLeaseHandle(){
+
+    },
+    queryEmployee(){
+      if(!this.customer_query){
+        this.showToast('不能为空！')
+        return
+      }
+      getLeasingList({keyword:this.customer_query}).then(res => {
+        const dbody = res.data
+        this.remoteLoading = false;
+        if (dbody.code != 0) {
+          this.$Notice.warning({
+            title: dbody.msg
+          })
+          return
+        }
+        let arr = [];
+        let list =  dbody.data || [];
+        list.forEach((item)=>{
+          let obj = {};
+          obj.value = item.id+'';
+          obj.text = item.fullname;
+          arr.push(obj)
+        });
+        this.leasingList = arr;
+        this.showLeasePicker();
+      })
+    },
     initInfo(){
       this.getKitchenList()
-      this.getLeasingList()
-      this.getManageList()
+      // this.getLeasingList()
+      // this.getManageList()
     },
     // 厨房列表
     getKitchenList(){
@@ -208,43 +274,43 @@ export default {
       this.getStoreNoList(id);
     },
     // 招商列表
-    getLeasingList(){
-      getLeasingList().then(res => {
-        const dbody = res.data;
-        if(dbody.code !=  0){
-          this.showToast(dbody.msg)
-          return
-        }
-        let arr = [];
-        let list =  dbody.data || [];
-        list.forEach((item)=>{
-          let obj = {};
-          obj.value = item.id+'';
-          obj.text = item.fullname;
-          arr.push(obj)
-        });
-        this.leasingList = arr;
-      })
-    },
+    // getLeasingList(){
+    //   getLeasingList().then(res => {
+    //     const dbody = res.data;
+    //     if(dbody.code !=  0){
+    //       this.showToast(dbody.msg)
+    //       return
+    //     }
+    //     let arr = [];
+    //     let list =  dbody.data || [];
+    //     list.forEach((item)=>{
+    //       let obj = {};
+    //       obj.value = item.id+'';
+    //       obj.text = item.fullname;
+    //       arr.push(obj)
+    //     });
+    //     this.leasingList = arr;
+    //   })
+    // },
     // 店内列表
-    getManageList(){
-      getManageList().then(res => {
-        const dbody = res.data;
-        if(dbody.code !=  0){
-          this.showToast(dbody.msg)
-          return
-        }
-        let arr = [];
-        let list =  dbody.data || [];
-        list.forEach((item)=>{
-          let obj = {};
-          obj.value = item.id+'';
-          obj.text = item.fullname;
-          arr.push(obj)
-        });
-        this.manageList = arr;
-      })
-    },
+    // getManageList(){
+    //   getManageList().then(res => {
+    //     const dbody = res.data;
+    //     if(dbody.code !=  0){
+    //       this.showToast(dbody.msg)
+    //       return
+    //     }
+    //     let arr = [];
+    //     let list =  dbody.data || [];
+    //     list.forEach((item)=>{
+    //       let obj = {};
+    //       obj.value = item.id+'';
+    //       obj.text = item.fullname;
+    //       arr.push(obj)
+    //     });
+    //     this.manageList = arr;
+    //   })
+    // },
     // 签约时间
     selectSignDate() {
       this.dateSignPicker = null;

@@ -19,7 +19,7 @@
             <span class="add-view_customer-info-item-span">带看次数：</span>
             <span class="add-view_customer-info-item-span">{{baseInfo.total_count}}</span>
           </div>
-          <div class="add-view_customer-info-item" >
+<!--           <div class="add-view_customer-info-item" >
             <span class="add-view_customer-info-item-span">招商经理：</span>
             <cube-select
               class="add-view_customer-info-item-span add-view_customer-info-item-input"
@@ -29,6 +29,22 @@
               :options="leasingList">
             </cube-select>
             <span v-else class="add-view_customer-info-item-span">{{baseInfo.employee_name}}</span>
+          </div> -->
+          <div class="add-view_customer-info-item" >
+            <cube-input  placeholder="搜索招商经理" class="add-view_customer-info-item-span add-view_customer-info-item-input" v-model="customer_query" >
+            </cube-input>
+            <cube-button
+              @click="queryEmployee"
+              class="add-view_customer-info-btnbox-button"
+              :primary="true"
+              :inline="true">
+              搜索
+            </cube-button>
+          </div>
+          <div class="add-view_customer-info-item" >
+            <span class="add-view_customer-info-item-span">招商经理：</span>
+            <cube-input class="add-view_customer-info-item-span add-view_customer-info-item-input" :readonly="true" v-model="baseInfo.employee_name" >
+            </cube-input>
           </div>
           <div class="add-view_customer-info-item" >
             <span class="add-view_customer-info-item-span">所属组：</span>
@@ -125,7 +141,7 @@
 <script>
 import CHeader from '@/components/CHeader'
 import { getScorllBoxHeight } from "@/js/util.js";
-import { getKitchenList , getLeasingList } from '@/api/data'
+import { getKitchenList , getLeasingList , showEmployee } from '@/api/data'
 import { addNewClue } from '@/api/view'
 export default {
   name: 'addView',
@@ -134,6 +150,7 @@ export default {
   },
   data () {
     return {
+      customer_query:'',
       baseInfo:{},
       editInfo:{
         group_name:'',
@@ -158,9 +175,53 @@ export default {
     }
   },
   methods: {
+    showLeasePicker() {
+      if (!this.leasePicker) {
+        this.leasePicker = this.$createPicker({
+          title: '招商经理',
+          data: [this.leasingList],
+          onSelect: this.selectLeaseHandle,
+          onCancel: this.cancelLeaseHandle
+        })
+      }
+      this.leasePicker.show()
+    },
+    selectLeaseHandle(selectedVal, selectedIndex, selectedText){
+      this.baseInfo.employee_id = selectedVal[0]
+      this.baseInfo.employee_name = selectedText[0]
+    },
+    cancelLeaseHandle(){
+
+    },
+    queryEmployee(){
+      if(!this.customer_query){
+        this.showToast('不能为空！')
+        return
+      }
+      getLeasingList({keyword:this.customer_query}).then(res => {
+        const dbody = res.data
+        this.remoteLoading = false;
+        if (dbody.code != 0) {
+          this.$Notice.warning({
+            title: dbody.msg
+          })
+          return
+        }
+        let arr = [];
+        let list =  dbody.data || [];
+        list.forEach((item)=>{
+          let obj = {};
+          obj.value = item.id+'';
+          obj.text = item.fullname;
+          arr.push(obj)
+        });
+        this.leasingList = arr;
+        this.showLeasePicker();
+      })
+    },
     initInfo(){
       this.getKitchenList()
-      this.getLeasingList()
+      // this.getLeasingList()
     },
     getKitchenList(){
       getKitchenList().then(res => {
@@ -180,25 +241,25 @@ export default {
         this.kitchenList = arr;
       }) 
     },
-    getLeasingList(){
-      getLeasingList().then(res => {
-        const dbody = res.data;
-        if(dbody.code !=  0){
-          this.showToast(dbody.msg)
-          return
-        }
-        let arr = [];
-        let list =  dbody.data || [];
-        list.forEach((item)=>{
-          let obj = {};
-          obj.value = item.id+'';
-          obj.text = item.fullname;
-          arr.push(obj)
-        });
-        this.leasingList = arr;
-        this.editEmployee = this.canEditEmployee();
-      })
-    },
+    // getLeasingList(){
+    //   getLeasingList().then(res => {
+    //     const dbody = res.data;
+    //     if(dbody.code !=  0){
+    //       this.showToast(dbody.msg)
+    //       return
+    //     }
+    //     let arr = [];
+    //     let list =  dbody.data || [];
+    //     list.forEach((item)=>{
+    //       let obj = {};
+    //       obj.value = item.id+'';
+    //       obj.text = item.fullname;
+    //       arr.push(obj)
+    //     });
+    //     this.leasingList = arr;
+    //     this.editEmployee = this.canEditEmployee();
+    //   })
+    // },
     selectDate() {
       if (!this.datePicker) {
         this.datePicker = this.$createDatePicker({
