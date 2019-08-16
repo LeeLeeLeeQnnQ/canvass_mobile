@@ -8,7 +8,7 @@
           <h3 class="add-view_customer-info-h3">带看录入</h3>
           <div class="add-view_customer-info-item" >
             <span class="add-view_customer-info-item-span">客户称呼：</span>
-            <cube-input class="add-view_customer-info-item-span add-view_customer-info-item-input" v-model="baseInfo.customer_name" >
+            <cube-input autofocus class="add-view_customer-info-item-span add-view_customer-info-item-input" v-model="baseInfo.customer_name" >
             </cube-input>
           </div>
           <div class="add-view_customer-info-item" >
@@ -151,7 +151,9 @@ export default {
   data () {
     return {
       customer_query:'',
-      baseInfo:{},
+      baseInfo:{
+        employee_name:'',
+      },
       editInfo:{
         group_name:'',
         clue_date:'',
@@ -191,7 +193,6 @@ export default {
       this.baseInfo.employee_name = selectedText[0]
     },
     cancelLeaseHandle(){
-
     },
     queryEmployee(){
       if(!this.customer_query){
