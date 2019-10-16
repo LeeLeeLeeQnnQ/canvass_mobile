@@ -294,12 +294,8 @@ export default {
             info.employee_name = item.text
           }
         })
-        if(info.isNew){
-          this.addNewClue(info);
-        }else{
-          delete info.id
-          this.addNewClue(info);
-        }
+        delete info.id
+        this.addNewClue(info);
       }
     },
     addNewClue( info ){

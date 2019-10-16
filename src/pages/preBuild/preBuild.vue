@@ -390,7 +390,12 @@ export default {
         return false
       }
       let phoneReg = /^1\d{10}$/
-      if (!obj.shopkeeper_phone || !phoneReg.test(obj.shopkeeper_phone)) {
+      if (!obj.shopkeeper_phone) {
+        this.showToast('请输入正确店主手机号！')
+        return false
+      }
+      obj.shopkeeper_phone = obj.shopkeeper_phone.trim();
+      if (!phoneReg.test(obj.shopkeeper_phone)) {
         this.showToast('请输入正确店主手机号！')
         return false
       }
